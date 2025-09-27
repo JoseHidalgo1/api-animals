@@ -20,7 +20,10 @@ public class AnimalController {
 
     // POST /animals - Crear un nuevo animal
     @PostMapping
-    public ResponseEntity<Animal> createAnimal(@Valid @RequestBody Animal animal) {
+    public ResponseEntity<Animal> createAnimal(@Valid @RequestBody(required = false) Animal animal) {
+        if (animal == null) {
+            throw new IllegalArgumentException("Request body is required for creating an animal");
+        }
         Animal savedAnimal = animalService.createAnimal(animal);
         return new ResponseEntity<>(savedAnimal, HttpStatus.CREATED);
     }
@@ -44,7 +47,10 @@ public class AnimalController {
     @PutMapping("/{id}")
     public ResponseEntity<Animal> updateAnimal(
             @PathVariable Long id,
-            @Valid @RequestBody Animal animalDetails) {
+            @Valid @RequestBody(required = false) Animal animalDetails) {
+        if (animalDetails == null) {
+            throw new IllegalArgumentException("Request body is required for updating an animal");
+        }
         Animal updatedAnimal = animalService.updateAnimal(id, animalDetails);
         return new ResponseEntity<>(updatedAnimal, HttpStatus.OK);
     }

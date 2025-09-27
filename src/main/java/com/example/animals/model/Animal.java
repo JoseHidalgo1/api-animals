@@ -11,6 +11,7 @@ public class Animal {
 
     @Id
     @Column(unique = true)
+    @NotNull(message = "Id cannot be null")
     private Long id;
 
     @NotNull(message = "Weight cannot be null")
