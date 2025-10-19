@@ -29,15 +29,21 @@ public class Animal {
     @NotNull(message = "isWild cannot be null")
     private Boolean isWild;
 
+    @ManyToOne
+    @JoinColumn(name = "habitat_id", referencedColumnName = "id")
+    @NotNull(message = "Habitat cannot be null")
+    private Habitat habitat;
+
     // Constructors
     public Animal() {}
 
-    public Animal(Long id, Double weight, String name, LocalDateTime birthDateTime, Boolean isWild) {
+    public Animal(Long id, Double weight, String name, LocalDateTime birthDateTime, Boolean isWild, Habitat habitat) {
         this.id = id;
         this.weight = weight;
         this.name = name;
         this.birthDateTime = birthDateTime;
         this.isWild = isWild;
+        this.habitat = habitat;
     }
 
     // Getters and Setters
@@ -56,6 +62,9 @@ public class Animal {
     public Boolean getIsWild() { return isWild; }
     public void setIsWild(Boolean isWild) { this.isWild = isWild; }
 
+    public Habitat getHabitat() { return habitat; }
+    public void setHabitat(Habitat habitat) { this.habitat = habitat; }
+
     @Override
     public String toString() {
         return "Animal{" +
@@ -64,6 +73,7 @@ public class Animal {
                 ", name='" + name + '\'' +
                 ", birthDateTime=" + birthDateTime +
                 ", isWild=" + isWild +
+                ", habitat=" + (habitat != null ? habitat.getId() : null) +
                 '}';
     }
 }
