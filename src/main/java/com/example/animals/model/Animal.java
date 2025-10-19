@@ -31,7 +31,6 @@ public class Animal {
 
     @ManyToOne
     @JoinColumn(name = "habitat_id", referencedColumnName = "id")
-    @NotNull(message = "Habitat cannot be null")
     private Habitat habitat;
 
     // Constructors

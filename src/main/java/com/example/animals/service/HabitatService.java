@@ -25,9 +25,9 @@ public class HabitatService {
     public List<Habitat> getAllHabitats(String isCoveredFilter) {
         if (isCoveredFilter == null || isCoveredFilter.equalsIgnoreCase("all")) {
             return habitatRepository.findAll();
-        } else if (isCoveredFilter.equalsIgnoreCase("covered")) {
+        } else if (isCoveredFilter.equalsIgnoreCase("true")) {
             return habitatRepository.findByIsCovered(true);
-        } else if (isCoveredFilter.equalsIgnoreCase("not_covered")) {
+        } else if (isCoveredFilter.equalsIgnoreCase("false")) {
             return habitatRepository.findByIsCovered(false);
         } else {
             return habitatRepository.findAll();
