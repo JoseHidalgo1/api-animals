@@ -2,6 +2,7 @@ package com.example.animals.service;
 
 import com.example.animals.model.Habitat;
 import com.example.animals.repository.HabitatRepository;
+import com.example.animals.repository.AnimalRepository;
 import com.example.animals.exception.HabitatNotFoundException;
 import com.example.animals.exception.HabitatIdAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class HabitatService {
 
     @Autowired
     private HabitatRepository habitatRepository;
+
+    @Autowired
+    private AnimalRepository animalRepository;
 
     public Habitat createHabitat(Habitat habitat) {
         if (habitatRepository.existsById(habitat.getId())) {
@@ -54,6 +58,11 @@ public class HabitatService {
     public void deleteHabitat(Integer id) {
         Habitat habitat = habitatRepository.findById(id)
                 .orElseThrow(() -> new HabitatNotFoundException("Habitat with ID " + id + " not found"));
+
+        if (animalRepository.existsByHabitatId(id)) {
+            throw new IllegalStateException("Cannot delete habitat because it is associated to one or more animals.");
+        }
+
         habitatRepository.delete(habitat);
     }
 }

@@ -10,12 +10,11 @@ import java.util.List;
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
-    // Buscar por tipo de animal (salvaje o domestico)
     List<Animal> findByIsWild(Boolean isWild);
 
-    // Verificar si existe un animal con el ID dado
     boolean existsById(Long id);
 
-    // Buscar animales por nombre
+    boolean existsByHabitatId(Integer habitatId);
+
     List<Animal> findByNameContainingIgnoreCase(String name);
 }
