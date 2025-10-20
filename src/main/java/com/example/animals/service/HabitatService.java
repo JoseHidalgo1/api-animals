@@ -21,7 +21,7 @@ public class HabitatService {
 
     public Habitat createHabitat(Habitat habitat) {
         if (habitatRepository.existsById(habitat.getId())) {
-            throw new HabitatIdAlreadyExistsException("Habitat with ID " + habitat.getId() + " already exists");
+            throw new HabitatIdAlreadyExistsException("Ya existe un hábitat con el ID " + habitat.getId());
         }
         return habitatRepository.save(habitat);
     }
@@ -40,12 +40,12 @@ public class HabitatService {
 
     public Habitat getHabitatById(Integer id) {
         return habitatRepository.findById(id)
-                .orElseThrow(() -> new HabitatNotFoundException("Habitat with ID " + id + " not found"));
+                .orElseThrow(() -> new HabitatNotFoundException("No se encontró un hábitat con el ID " + id));
     }
 
     public Habitat updateHabitat(Integer id, Habitat habitatDetails) {
         Habitat existingHabitat = habitatRepository.findById(id)
-                .orElseThrow(() -> new HabitatNotFoundException("Habitat with ID " + id + " not found"));
+                .orElseThrow(() -> new HabitatNotFoundException("No se encontró un hábitat con el ID " + id));
 
         existingHabitat.setName(habitatDetails.getName());
         existingHabitat.setArea(habitatDetails.getArea());
@@ -57,10 +57,10 @@ public class HabitatService {
 
     public void deleteHabitat(Integer id) {
         Habitat habitat = habitatRepository.findById(id)
-                .orElseThrow(() -> new HabitatNotFoundException("Habitat with ID " + id + " not found"));
+                .orElseThrow(() -> new HabitatNotFoundException("No se encontró un hábitat con el ID " + id));
 
         if (animalRepository.existsByHabitatId(id)) {
-            throw new IllegalStateException("Cannot delete habitat because it is associated to one or more animals.");
+            throw new IllegalStateException("No se puede eliminar el hábitat porque está asociado a uno o más animales.");
         }
 
         habitatRepository.delete(habitat);
