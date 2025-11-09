@@ -3,6 +3,7 @@ package com.example.animals.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
 
 @Entity
@@ -31,6 +32,7 @@ public class Animal {
 
     @ManyToOne
     @JoinColumn(name = "habitat_id", referencedColumnName = "id")
+    @JsonBackReference
     private Habitat habitat;
 
     // Constructors

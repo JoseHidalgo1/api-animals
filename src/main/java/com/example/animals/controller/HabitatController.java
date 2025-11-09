@@ -56,4 +56,18 @@ public class HabitatController {
         habitatService.deleteHabitat(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    // GET /habitats/{id}/with-animals - Obtener Habitat con sus Animals (Maestro-Detalle)
+    @GetMapping("/{id}/with-animals")
+    public ResponseEntity<Habitat> getHabitatWithAnimals(@PathVariable Integer id) {
+        Habitat habitat = habitatService.getHabitatWithAnimals(id);
+        return new ResponseEntity<>(habitat, HttpStatus.OK);
+    }
+
+    // GET /habitats/with-animals - Obtener todos los Habitats con sus Animals
+    @GetMapping("/with-animals")
+    public ResponseEntity<List<Habitat>> getAllHabitatsWithAnimals() {
+        List<Habitat> habitats = habitatService.getAllHabitsWithAnimals();
+        return new ResponseEntity<>(habitats, HttpStatus.OK);
+    }
 }

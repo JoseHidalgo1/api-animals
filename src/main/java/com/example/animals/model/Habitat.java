@@ -3,7 +3,9 @@ package com.example.animals.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "habitats")
@@ -27,6 +29,11 @@ public class Habitat {
 
     @NotNull(message = "isCovered cannot be null")
     private Boolean isCovered;
+
+    // Relación OneToMany con Animal (Maestro-Detalle)
+    @OneToMany(mappedBy = "habitat", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Animal> animals;
 
     // Constructores
     public Habitat() {}
@@ -54,6 +61,9 @@ public class Habitat {
 
     public Boolean getIsCovered() { return isCovered; }
     public void setIsCovered(Boolean isCovered) { this.isCovered = isCovered; }
+
+    public List<Animal> getAnimals() { return animals; }
+    public void setAnimals(List<Animal> animals) { this.animals = animals; }
 
     @Override
     public String toString() {

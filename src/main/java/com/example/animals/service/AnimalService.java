@@ -87,4 +87,14 @@ public class AnimalService {
                 .orElseThrow(() -> new AnimalNotFoundException("Animal with ID " + id + " not found"));
         animalRepository.delete(animal);
     }
+
+    // Consulta personalizada: Buscar animales por peso mínimo
+    public List<Animal> getAnimalsByMinWeight(Double minWeight) {
+        return animalRepository.findByMinWeight(minWeight);
+    }
+
+    // Consulta personalizada: Buscar animales por nombre
+    public List<Animal> searchAnimalsByName(String name) {
+        return animalRepository.findByNameCustom(name);
+    }
 }

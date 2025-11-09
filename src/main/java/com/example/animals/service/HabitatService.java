@@ -65,4 +65,15 @@ public class HabitatService {
 
         habitatRepository.delete(habitat);
     }
+
+    // Consulta personalizada: Obtener Habitat con sus Animals (Maestro-Detalle)
+    public Habitat getHabitatWithAnimals(Integer id) {
+        return habitatRepository.findByIdWithAnimals(id)
+                .orElseThrow(() -> new HabitatNotFoundException("Habitat with ID " + id + " not found"));
+    }
+
+    // Consulta personalizada: Obtener todos los Habitats con sus Animals
+    public List<Habitat> getAllHabitsWithAnimals() {
+        return habitatRepository.findAllWithAnimals();
+    }
 }

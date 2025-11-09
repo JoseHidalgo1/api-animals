@@ -61,4 +61,20 @@ public class AnimalController {
         animalService.deleteAnimal(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    // GET /animals/search/by-weight - Buscar animales por peso mínimo (Consulta personalizada)
+    @GetMapping("/search/by-weight")
+    public ResponseEntity<List<Animal>> getAnimalsByMinWeight(
+            @RequestParam(value = "min_weight") Double minWeight) {
+        List<Animal> animals = animalService.getAnimalsByMinWeight(minWeight);
+        return new ResponseEntity<>(animals, HttpStatus.OK);
+    }
+
+    // GET /animals/search/by-name - Buscar animales por nombre (Consulta personalizada)
+    @GetMapping("/search/by-name")
+    public ResponseEntity<List<Animal>> searchAnimalsByName(
+            @RequestParam(value = "name") String name) {
+        List<Animal> animals = animalService.searchAnimalsByName(name);
+        return new ResponseEntity<>(animals, HttpStatus.OK);
+    }
 }
