@@ -15,11 +15,13 @@ Hemos agregado **4 nuevos endpoints** al backend para cumplir con los requisitos
 **Descripción:** Retorna todos los animales que tienen un peso mayor o igual al valor especificado, ordenados de mayor a menor peso.
 
 **Ejemplo de llamada:**
+
 ```
 GET http://localhost:8080/animals/search/by-weight?min_weight=50
 ```
 
 **Respuesta:**
+
 ```json
 [
   {
@@ -50,11 +52,13 @@ GET http://localhost:8080/animals/search/by-weight?min_weight=50
 **Descripción:** Retorna todos los animales cuyo nombre contenga el texto especificado.
 
 **Ejemplo de llamada:**
+
 ```
 GET http://localhost:8080/animals/search/by-name?name=leon
 ```
 
 **Respuesta:**
+
 ```json
 [
   {
@@ -78,11 +82,13 @@ GET http://localhost:8080/animals/search/by-name?name=leon
 **Descripción:** Retorna UN habitat específico con la lista completa de todos los animales que pertenecen a ese habitat. **Esta es la consulta MAESTRO-DETALLE principal.**
 
 **Ejemplo de llamada:**
+
 ```
 GET http://localhost:8080/habitats/1/with-animals
 ```
 
 **Respuesta:**
+
 ```json
 {
   "id": 1,
@@ -119,6 +125,7 @@ GET http://localhost:8080/habitats/1/with-animals
 **⚠️ IMPORTANTE:** El objeto `Habitat` ahora incluye un array `animals` con todos los animales asociados. **Deben actualizar su modelo/interfaz de Habitat** para incluir este campo:
 
 **TypeScript/Angular:**
+
 ```typescript
 export interface Habitat {
   id: number;
@@ -126,11 +133,12 @@ export interface Habitat {
   area: number;
   establishedDate: string;
   isCovered: boolean;
-  animals?: Animal[];  // ← NUEVO CAMPO
+  animals?: Animal[]; // ← NUEVO CAMPO
 }
 ```
 
 **Java/Android:**
+
 ```java
 public class Habitat {
     private Integer id;
@@ -152,11 +160,13 @@ public class Habitat {
 **Descripción:** Retorna TODOS los habitats existentes, cada uno con su lista de animales asociados.
 
 **Ejemplo de llamada:**
+
 ```
 GET http://localhost:8080/habitats/with-animals
 ```
 
 **Respuesta:**
+
 ```json
 [
   {
@@ -189,12 +199,14 @@ GET http://localhost:8080/habitats/with-animals
 ## ⚙️ CAMBIOS EN LOS ENDPOINTS EXISTENTES
 
 Los endpoints existentes **NO han cambiado** su comportamiento:
+
 - ✅ `GET /animals` - Sigue funcionando igual (con filtro `is_wild`)
 - ✅ `GET /animals/{id}` - Sigue funcionando igual
 - ✅ `GET /habitats` - Sigue funcionando igual (con filtro `is_covered`)
 - ✅ `GET /habitats/{id}` - Sigue funcionando igual (pero NO incluye animals)
 
 **Diferencia clave:**
+
 - `GET /habitats/{id}` → Retorna solo el habitat (sin animals)
 - `GET /habitats/{id}/with-animals` → Retorna habitat + lista de animals
 
@@ -203,7 +215,9 @@ Los endpoints existentes **NO han cambiado** su comportamiento:
 ## 🎨 SUGERENCIAS DE UI/UX
 
 ### Para búsqueda de animales:
+
 1. **Formulario con dos opciones de búsqueda:**
+
    - Input numérico para "Peso mínimo (kg)"
    - Input de texto para "Buscar por nombre"
    - Botones independientes o pestañas para cada tipo de búsqueda
@@ -212,7 +226,9 @@ Los endpoints existentes **NO han cambiado** su comportamiento:
    - ID, Nombre, Peso, Fecha de nacimiento, ¿Es salvaje?
 
 ### Para Maestro-Detalle (Habitat con Animals):
+
 1. **Vista de detalle expandible:**
+
    - Card/panel con información del Habitat (maestro)
    - Tabla o lista con los animales de ese habitat (detalles)
    - Contador: "Animales en este habitat: X"
@@ -240,6 +256,7 @@ Los endpoints existentes **NO han cambiado** su comportamiento:
 ## 🧪 DATOS DE PRUEBA
 
 Para facilitar las pruebas, asegúrense de tener:
+
 - Al menos 2 habitats creados
 - Al menos 2-3 animales asociados a cada habitat
 - Animales con diferentes pesos para probar el filtro por peso mínimo
@@ -275,6 +292,7 @@ Cambio en modelo:
 ### Angular/TypeScript
 
 **1. Actualizar el servicio de Animals (`animal.service.ts`):**
+
 ```typescript
 // Buscar animales por peso mínimo
 searchByMinWeight(minWeight: number): Observable<Animal[]> {
@@ -288,6 +306,7 @@ searchByName(name: string): Observable<Animal[]> {
 ```
 
 **2. Actualizar el servicio de Habitats (`habitat.service.ts`):**
+
 ```typescript
 // Obtener habitat con sus animales (Maestro-Detalle)
 getHabitatWithAnimals(id: number): Observable<Habitat> {
@@ -301,31 +320,33 @@ getAllHabitatsWithAnimals(): Observable<Habitat[]> {
 ```
 
 **3. Componente de búsqueda (`animal-search.component.ts`):**
+
 ```typescript
 export class AnimalSearchComponent {
   animals: Animal[] = [];
   minWeight: number = 0;
-  searchName: string = '';
+  searchName: string = "";
 
   constructor(private animalService: AnimalService) {}
 
   searchByWeight(): void {
     this.animalService.searchByMinWeight(this.minWeight).subscribe({
-      next: (data) => this.animals = data,
-      error: (err) => console.error('Error:', err)
+      next: (data) => (this.animals = data),
+      error: (err) => console.error("Error:", err),
     });
   }
 
   searchByName(): void {
     this.animalService.searchByName(this.searchName).subscribe({
-      next: (data) => this.animals = data,
-      error: (err) => console.error('Error:', err)
+      next: (data) => (this.animals = data),
+      error: (err) => console.error("Error:", err),
     });
   }
 }
 ```
 
 **4. Componente Maestro-Detalle (`habitat-detail.component.ts`):**
+
 ```typescript
 export class HabitatDetailComponent implements OnInit {
   habitat: Habitat | null = null;
@@ -336,10 +357,10 @@ export class HabitatDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = Number(this.route.snapshot.paramMap.get("id"));
     this.habitatService.getHabitatWithAnimals(id).subscribe({
-      next: (data) => this.habitat = data,
-      error: (err) => console.error('Error:', err)
+      next: (data) => (this.habitat = data),
+      error: (err) => console.error("Error:", err),
     });
   }
 }
@@ -350,12 +371,13 @@ export class HabitatDetailComponent implements OnInit {
 ### Java/Android
 
 **1. Actualizar el servicio de Animals (Retrofit):**
+
 ```java
 public interface AnimalService {
     // Buscar animales por peso mínimo
     @GET("animals/search/by-weight")
     Call<List<Animal>> searchByMinWeight(@Query("min_weight") Double minWeight);
-    
+
     // Buscar animales por nombre
     @GET("animals/search/by-name")
     Call<List<Animal>> searchByName(@Query("name") String name);
@@ -363,12 +385,13 @@ public interface AnimalService {
 ```
 
 **2. Actualizar el servicio de Habitats (Retrofit):**
+
 ```java
 public interface HabitatService {
     // Obtener habitat con sus animales (Maestro-Detalle)
     @GET("habitats/{id}/with-animals")
     Call<Habitat> getHabitatWithAnimals(@Path("id") Integer id);
-    
+
     // Obtener todos los habitats con sus animales
     @GET("habitats/with-animals")
     Call<List<Habitat>> getAllHabitatsWithAnimals();
@@ -376,6 +399,7 @@ public interface HabitatService {
 ```
 
 **3. Modelo Habitat actualizado:**
+
 ```java
 public class Habitat {
     private Integer id;
@@ -384,7 +408,7 @@ public class Habitat {
     private String establishedDate;
     private Boolean isCovered;
     private List<Animal> animals; // ← NUEVO
-    
+
     // Getters y Setters
     public List<Animal> getAnimals() { return animals; }
     public void setAnimals(List<Animal> animals) { this.animals = animals; }
@@ -396,10 +420,12 @@ public class Habitat {
 ## ✅ VALIDACIONES A CONSIDERAR
 
 1. **Búsqueda por peso:**
+
    - Validar que `min_weight` sea un número positivo
    - Mostrar mensaje si no hay resultados
 
 2. **Búsqueda por nombre:**
+
    - Validar que el texto no esté vacío
    - Mostrar mensaje si no hay resultados
 
@@ -412,6 +438,7 @@ public class Habitat {
 ## 🎯 CRITERIOS DE ACEPTACIÓN
 
 Para considerar la integración completa, deben:
+
 1. ✅ Poder buscar animales por peso mínimo y mostrar resultados
 2. ✅ Poder buscar animales por nombre y mostrar resultados
 3. ✅ Poder visualizar un habitat con todos sus animales (vista maestro-detalle)
