@@ -1,5 +1,6 @@
 package com.example.animals.controller;
 
+import com.example.animals.dto.AnimalWithKeeperDTO;
 import com.example.animals.model.Animal;
 import com.example.animals.service.AnimalService;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/animals")
@@ -76,5 +78,32 @@ public class AnimalController {
             @RequestParam(value = "name") String name) {
         List<Animal> animals = animalService.searchAnimalsByName(name);
         return new ResponseEntity<>(animals, HttpStatus.OK);
+    }
+
+    // PUT /animals/{animalId}/assign-keeper - Asignar un Keeper a un Animal
+    @PutMapping("/{animalId}/assign-keeper")
+    public ResponseEntity<Animal> assignKeeperToAnimal(
+            @PathVariable Long animalId,
+            @RequestBody Map<String, Long> requestBody) {
+        Long keeperId = requestBody.get("keeperId");
+        if (keeperId == null) {
+            throw new IllegalArgumentException("keeperId is required in request body");
+        }
+        Animal updatedAnimal = animalService.assignKeeperToAnimal(animalId, keeperId);
+        return new ResponseEntity<>(updatedAnimal, HttpStatus.OK);
+    }
+
+    // GET /animals/{id}/with-keeper - Obtener animal con información de su Keeper
+    @GetMapping("/{id}/with-keeper")
+    public ResponseEntity<AnimalWithKeeperDTO> getAnimalWithKeeper(@PathVariable Long id) {
+        AnimalWithKeeperDTO animalWithKeeper = animalService.getAnimalWithKeeper(id);
+        return new ResponseEntity<>(animalWithKeeper, HttpStatus.OK);
+    }
+
+    // GET /animals/with-keepers - Obtener todos los animales con información de sus Keepers
+    @GetMapping("/with-keepers")
+    public ResponseEntity<List<AnimalWithKeeperDTO>> getAllAnimalsWithKeepers() {
+        List<AnimalWithKeeperDTO> animalsWithKeepers = animalService.getAllAnimalsWithKeepers();
+        return new ResponseEntity<>(animalsWithKeepers, HttpStatus.OK);
     }
 }

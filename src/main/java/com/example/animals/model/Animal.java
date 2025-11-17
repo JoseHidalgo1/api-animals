@@ -35,6 +35,9 @@ public class Animal {
     @JsonBackReference
     private Habitat habitat;
 
+    // Referencia al ID del Keeper en el otro microservicio (no es una relación JPA)
+    private Long keeperId;
+
     // Constructors
     public Animal() {}
 
@@ -66,6 +69,9 @@ public class Animal {
     public Habitat getHabitat() { return habitat; }
     public void setHabitat(Habitat habitat) { this.habitat = habitat; }
 
+    public Long getKeeperId() { return keeperId; }
+    public void setKeeperId(Long keeperId) { this.keeperId = keeperId; }
+
     @Override
     public String toString() {
         return "Animal{" +
@@ -75,6 +81,7 @@ public class Animal {
                 ", birthDateTime=" + birthDateTime +
                 ", isWild=" + isWild +
                 ", habitat=" + (habitat != null ? habitat.getId() : null) +
+                ", keeperId=" + keeperId +
                 '}';
     }
 }
