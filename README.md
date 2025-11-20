@@ -289,8 +289,8 @@ DELETE http://localhost:8080/habitats/1
 
 1. **Clonar el repositorio**
 ```bash
-git clone https://github.com/tuusuario/animals-api.git
-cd animals-api
+git clone https://github.com/JoseHidalgo1/api-animals.git
+cd api-animals
 ```
 
 2. **Configurar la base de datos**
