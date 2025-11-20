@@ -431,11 +431,3 @@ List<Habitat> findByAreaGreaterThan(double area);
 5. GlobalExceptionHandler captura errores si existen
 6. Servidor devuelve respuesta JSON con código HTTP
 ```
----
-
-## Autores
-Desarrollo de Aplicaciones Empresariales  
----
-
-
-
